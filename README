@@ -1,0 +1,104 @@
+operations/mediawiki-config.git
+-------------------------------
+
+Files in this repository are almost a mirror of the Wikimedia Foundation
+cluster configuration. Omitted files include passwords and security measures.
+
+*.dblist
+ List of databases. To vary by realm (e.g. 'production', 'labs'), add the realm
+as a suffix before the extension, separated with a dash. Example:
+	"all-labs.dblist".
+
+wikiversions.json, wikiversions.cdb
+wikiversions-labs.json, wikiversions-labs.cdb
+ Let us associate a database with a specific copy of MediaWiki (generally a
+branch). The .cdb file is updated by editing wikiversions.json first and then
+running multiversion/refreshWikiversionsCDB. To vary by realm, add a suffix
+before the extension, e.g. "wikiversions-labs.json".
+
+docroot/
+ The Apache document root for several of our VirtualHosts.
+
+images/
+ Shared pictures for the unified login system used by CentralAuth.
+
+w/
+ The "w/" directory in the docroot of any MediaWiki-serving VirtualHost.
+
+tests/
+ Hold some PHPUnit tests.
+
+wmf-config/
+ The MediaWiki configuration for all database. Think of it like a huge
+LocalSettings.php.
+
+wmf-config/CommonSettings.php
+ Generic configuration such as including extensions or calling over piece
+ of configuration. This is mostly shared among all wikis.
+
+wmf-config/InitialiseSettings.php
+ Per wiki configuration.
+
+wmf-config/db.php
+ Databases related configuration.
+
+wmf-config/mc.php
+ Memcached configuration.
+
+wmf-config/*-labs.php
+ Files used by the beta cluster to override production settings.
+
+
+By using getRealmSpecificFilename(), from multiversion/MWRealm.php, one can
+have configuration loaded depending on the realm or the datacenter the file is
+executed on.  The function will test out several file suffixes and return the
+filename of the first match.  The detection order is:
+
+ - realm datacenter
+ - realm
+ - datacenter
+
+Falling back to the filename given as argument.
+
+Example, per datacenter:
+
+ Given the files:
+  - mc-pmtpa.php
+  - mc.php
+
+ The call to getRealmSpecificFilename( 'mc.php' ) will return:
+
+  - on pmtpa: mc-pmtpa.php
+  - on any other datacenter (e.g. eqiad): mc.php
+
+
+Example per realm with a non php file extension:
+
+ Given the files
+  - db-production.log
+  - db-labs.log
+
+ The call to getRealmSpecificFilename( 'db.log' ) will return:
+
+  - in a labs instance: 'db-labs.log'
+  - on a production server: 'db-production.log'
+
+A more complicated example:
+
+ Given the files:
+  - log-production.php
+  - log-eqiad.php
+  - log.php
+
+ The call to getRealmSpecificFilename( 'log.php' ) will return:
+
+  - in labs eqiad: 'log-eqiad.php'
+  - in labs pmtpa: 'log.php'
+  - in production pmtpa: 'log-production.php'
+  - in production eqiad: 'log-production.php'
+
+ The last case is because the realm takes precedence over the datacenter.
+ You can also use a realm/datacenter suffix:
+  'log-production-eqiad.php'.
+
+You can find more examples in tests/multiversion/MWRealmTest.php.

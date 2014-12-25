@@ -1,0 +1,45 @@
+# Repository management
+.svn
+
+# Editors
+*~
+*.swp
+.idea/
+
+# Wikimedia private/temporary stuff
+private
+xrumer
+mwblocker.log
+wmf-config/ExtensionMessages-*.php
+php-*/
+wikiversions.cdb
+wikiversions-labs.cdb
+wmf-config/*-setup.php
+wmf-config/checkers.php
+lib
+cgi-bin
+boardvote.gpg
+common
+google*
+slot*
+ganglia.dat
+
+## Old images such as the ones used for $wgLogo
+/images/*.gif
+/images/*.png
+/images/*.xcf
+# Exceptions:
+# $wgCopyrightIcon
+!/images/wikimedia-button.png
+!/images/wikimedia-button-1.5x.png
+!/images/wikimedia-button-2x.png
+
+## Not in version control yet
+fonts
+
+/logs
+
+# Operating system stuff
+## Mac OS X
+.DS_Store
+/nbproject/private/

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<phpunit bootstrap="./tests/bootstrap.php"
+	backupGlobals="false"
+	convertNoticesToExceptions="true"
+	convertWarningsToExceptions="true"
+	convertErrorsToExceptions="true"
+	stopOnError="false"
+	stopOnFailure="false"
+	colors="true"
+	strict="true"
+	verbose="true"
+>
+	<testsuites>
+		<testsuite name="dblists">
+			<file>tests/dblistTest.php</file>
+		</testsuite>
+		<testsuite name="wmfconfig">
+			<directory>tests/wmf-config</directory>
+		</testsuite>
+		<testsuite name="main">
+			<directory>tests</directory>
+		</testsuite>
+	</testsuites>
+
+	<groups>
+		<exclude>
+			<group>Broken</group>
+			<group>Disabled</group>
+		</exclude>
+	</groups>
+</phpunit>
