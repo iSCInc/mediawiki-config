@@ -1,0 +1,11 @@
+{
+	"name": "wikimedia/mediawiki-config",
+	"description": "MediaWiki configuration for the Wikimedia farm",
+	"require": {
+		"wikimedia/cdb": "1.0.1"
+	},
+	"config": {
+		"optimize-autoloader": true,
+		"prepend-autoloader": false
+	}
+}
